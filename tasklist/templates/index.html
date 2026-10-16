@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasklist</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main>
+        <h1>Tasklist</h1>
+        <p class="today-line">Today in {{ current_tz }}: {{ today_str }}</p>
+
+        <form method="get" action="/" class="tz-form">
+            <label for="tz">Time zone:</label>
+            <select name="tz" id="tz" onchange="this.form.submit()">
+                {% for tz in timezones %}
+                    <option value="{{ tz }}" {% if tz == current_tz %}selected{% endif %}>{{ tz }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn-show">Show</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.due_formatted }}</td>
+                    <td><span class="badge {{ task.status_class }}">{{ task.status }}</span></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
